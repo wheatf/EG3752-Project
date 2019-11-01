@@ -5,10 +5,9 @@
  */
 package fi.valo;
 
+import fi.valo.db.CustomerTable;
+import fi.valo.model.Customer;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,49 +23,27 @@ import javax.sql.DataSource;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
     @Resource(name = "jdbc/velo")
-    private DataSource database;
+    private DataSource dataSource;
     
     @Override
     protected void doPost(HttpServletRequest request,
                             HttpServletResponse response) 
                         throws ServletException, IOException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = database.getConnection();
-            statement = connection.prepareStatement("INSERT INTO customer (fullname, email, addressline1, addressline2, postalcode, mobile, password)"
-                                                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, request.getParameter("fullName"));
-            statement.setString(2, request.getParameter("email"));
-            statement.setString(3, request.getParameter("addressLine1"));
-            statement.setString(4, request.getParameter("addressLine2")
-                                    .isEmpty() ? null : request.getParameter("addressLine2"));
-            statement.setString(5, request.getParameter("postalCode"));
-            statement.setString(6, request.getParameter("mobile"));
-            // TODO: Hash password with SHA-256
-            statement.setString(7, request.getParameter("password"));
-            statement.executeUpdate();
-            
-            response.sendRedirect(request.getContextPath() + "/register_success.html");
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    System.err.println(ex.getMessage());
-                }
-            }
-            
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    System.err.println(ex.getMessage());
-                }
-            }
-        }
+        CustomerTable customerTable = new CustomerTable(dataSource);
+        
+        Customer customer = new Customer();
+        customer.setFullName(request.getParameter("fullName"));
+        customer.setEmail(request.getParameter("email"));
+        customer.setAddressLine1(request.getParameter("addressLine1"));
+        customer.setAddressLine2(request.getParameter("addressLine2"));
+        customer.setPostalCode(request.getParameter("postalCode"));
+        customer.setMobile(request.getParameter("mobile"));
+        customer.setPassword(request.getParameter("password"));
+        
+        customerTable.add(customer);
+        customerTable.close();
+        
+        response.sendRedirect(request.getContextPath() + "/register_success.html");
     }
     
 }
