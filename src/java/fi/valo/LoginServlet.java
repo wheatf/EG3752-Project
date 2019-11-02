@@ -32,11 +32,12 @@ public class LoginServlet extends HttpServlet {
         CustomerTable customerTable = new CustomerTable(dataSource);
         
         Customer customer = customerTable.find(request.getParameter("email"));
+        customerTable.close();
         
         if (customer != null)
         {
             if (customer.getPassword().equals(request.getParameter("password"))) {
-                response.sendRedirect(request.getContextPath() + "/search_item.jsp");
+                response.sendRedirect(request.getContextPath() + "/search");
                 return;
             }
         }

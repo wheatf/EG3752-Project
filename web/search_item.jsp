@@ -29,12 +29,12 @@
             
             <form action="search" method="get">
                 <div>
-                    <label for="search_item_name">
+                    <label for="searchItemName">
                         <span>Name of item:</span>
                     </label>
                     <input type="text" 
-                           id="search_item_name" 
-                           name="search_item_name">
+                           id="searchItemName" 
+                           name="searchItemName">
                 </div>
                 
                 <div>
@@ -51,16 +51,14 @@
                     <th>Price</th>
                     <th>Points Redeemable</th>
                 </tr>
-                <%--
-                <c:forEach items="items" var="item">
+                <c:forEach items="${items}" var="item">
                     <tr>
-                        <td>${item.itemDescription}</td>
-                        <td>${item.brand}</td>
-                        <td>${item.price}</td>
-                        <td>${item.points}</td>
+                        <td>${item.getItemDescription()}</td>
+                        <td>${item.getBrand()}</td>
+                        <td>${item.getPrice()}</td>
+                        <td>${item.getPoints()}</td>
                     </tr>
                 </c:forEach>
-                --%>
             </table>
         </section>
     </body>

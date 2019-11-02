@@ -7,9 +7,6 @@
 package fi.valo.db;
 
 import fi.valo.model.Customer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
@@ -17,22 +14,15 @@ import javax.sql.DataSource;
  *
  * @author Jimmy
  */
-public class CustomerTable {
-    private final DataSource dataSource;
-    
-    private Connection connection;
-    private PreparedStatement statement;
-    private ResultSet resultSet;
-    
+public class CustomerTable extends Table {
+
     public CustomerTable(DataSource dataSource) {
-        this.dataSource = dataSource;
+        super(dataSource);
     }
     
     public Customer find(String email) {
-        try {
-            if (connection == null) {
-                connection = dataSource.getConnection();
-            }
+        try {            
+            connection = getConnection();
             
             statement = connection.prepareStatement("SELECT * FROM customer "
                                                     + "WHERE email = ?");
@@ -59,10 +49,8 @@ public class CustomerTable {
     }
     
     public void add(Customer customer) {
-        try {
-            if (connection == null) {
-                connection = dataSource.getConnection();
-            }
+        try {  
+            connection = getConnection();
             
             statement = connection.prepareStatement("INSERT INTO customer "
                     + "(fullname, email, addressline1, addressline2, postalcode, mobile, password)"
@@ -78,32 +66,6 @@ public class CustomerTable {
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-        }
-    }
-    
-    public void close() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-        
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-        
-        if (resultSet != null) {
-            try {
-                resultSet.close();
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
-            }
         }
     }
 }
