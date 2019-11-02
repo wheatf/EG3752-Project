@@ -28,11 +28,43 @@ public class CustomerTable {
         this.dataSource = dataSource;
     }
     
+    public Customer find(String email) {
+        try {
+            if (connection == null) {
+                connection = dataSource.getConnection();
+            }
+            
+            statement = connection.prepareStatement("SELECT * FROM customer "
+                                                    + "WHERE email = ?");
+            statement.setString(1, email);
+            
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Customer customer = new Customer();
+                customer.setFullName(resultSet.getString("fullname"));
+                customer.setEmail(resultSet.getString("email"));
+                customer.setAddressLine1(resultSet.getString("addressline1"));
+                customer.setAddressLine2(resultSet.getString("addressline2"));
+                customer.setPostalCode(resultSet.getString("postalcode"));
+                customer.setMobile(resultSet.getString("mobile"));
+                customer.setPassword(resultSet.getString("password"));
+                
+                return customer;
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return null;
+    }
+    
     public void add(Customer customer) {
         try {
-            connection = dataSource.getConnection();
+            if (connection == null) {
+                connection = dataSource.getConnection();
+            }
             
-            statement = connection.prepareCall("INSERT INTO customer "
+            statement = connection.prepareStatement("INSERT INTO customer "
                     + "(fullname, email, addressline1, addressline2, postalcode, mobile, password)"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, customer.getFullName());
