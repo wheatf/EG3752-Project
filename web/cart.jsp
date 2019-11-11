@@ -20,7 +20,7 @@
         <nav>
             <ul>
                 <li><a href="profile.jsp">Go to my profile</a></li>
-                <li><a href="search_item.jsp">Back to list of items</a></li>
+                <li><a href="search">Back to list of items</a></li>
             </ul>
         </nav>
         
