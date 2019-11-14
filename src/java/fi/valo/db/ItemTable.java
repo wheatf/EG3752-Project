@@ -22,6 +22,32 @@ public class ItemTable extends Table {
         super(dataSource);
     }
     
+    public Item find(int id) {
+        try {
+            connection = getConnection();
+            
+            statement = connection.prepareStatement("SELECT * FROM item "
+                                                    + "WHERE itemId = ?");
+            statement.setInt(1, id);
+            
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Item item = new Item();
+                item.setItemId(resultSet.getInt("itemId"));
+                item.setItemDescription(resultSet.getString("itemDescription"));
+                item.setBrand(resultSet.getString("brand"));
+                item.setPrice(resultSet.getBigDecimal("price"));
+                item.setPoints(resultSet.getInt("points"));
+                
+                return item;
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return null;
+    }
+    
     public List<Item> findContains(String itemDescription) {
         try {
             connection = getConnection();
@@ -35,6 +61,7 @@ public class ItemTable extends Table {
             List<Item> items = new ArrayList<>();
             while (resultSet.next()) {
                 Item item = new Item();
+                item.setItemId(resultSet.getInt("itemId"));
                 item.setItemDescription(resultSet.getString("itemDescription"));
                 item.setBrand(resultSet.getString("brand"));
                 item.setPrice(resultSet.getBigDecimal("price"));

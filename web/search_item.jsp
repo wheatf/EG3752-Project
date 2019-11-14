@@ -57,6 +57,13 @@
                         <td>${item.getBrand()}</td>
                         <td>${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
+                        <td>
+                            <form action="addCart" method="post">
+                                <input type="hidden" name="itemId" value="${item.getItemId()}"/>
+                                <input type="number" id="quantity" name="quantity" required/>
+                                <button type="submit">Add to cart</button>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

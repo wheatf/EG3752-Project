@@ -31,17 +31,17 @@
                     <th>Brand</th>
                     <th>Price</th>
                     <th>Points Redeemable</th>
+                    <th style="color: red">Items In Cart</th>
                 </tr>
-                <%--
-                <c:forEach items="items" var="item">
+                <c:forEach items="${sessionItems}" var="item">
                     <tr>
-                        <td>${item.itemDescription}</td>
-                        <td>${item.brand}</td>
-                        <td>${item.price}</td>
-                        <td>${item.points}</td>
+                        <td>${item.getItemDescription()}</td>
+                        <td>${item.getBrand()}</td>
+                        <td>${item.getPrice()}</td>
+                        <td>${item.getPoints()}</td>
+                        <td style="color: red">${item.getQuantity()}</td>
                     </tr>
                 </c:forEach>
-                --%>
             </table>
         </section>
             

@@ -31,6 +31,7 @@ public class CustomerTable extends Table {
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Customer customer = new Customer();
+                customer.setCustomerId(resultSet.getInt("customerId"));
                 customer.setFullName(resultSet.getString("fullname"));
                 customer.setEmail(resultSet.getString("email"));
                 customer.setAddressLine1(resultSet.getString("addressline1"));
