@@ -35,22 +35,26 @@ public class AddCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                             HttpServletResponse response)
                         throws ServletException, IOException {
-        ItemTable itemTable = new ItemTable(dataSource);
-        QuantityItem item = new QuantityItem(itemTable.
-                                                find(Integer.
-                                                        parseInt(request.getParameter("itemId"))));
-        // TODO: Only allow max of 20 quantity
-        item.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+        int itemId = Integer.parseInt(request.getParameter("itemId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
         
-        HttpSession session = request.getSession();
+        if (itemId > -1 && quantity > 0) {
+            ItemTable itemTable = new ItemTable(dataSource);
+            QuantityItem item = new QuantityItem(itemTable.find(itemId));
+            // TODO: Only allow max of 20 quantity
+            item.setQuantity(quantity);
+
+            HttpSession session = request.getSession();
+
+            List<QuantityItem> sessionItems = Optional.
+                                                ofNullable((List<QuantityItem>) session.getAttribute("sessionItems")).
+                                                orElse((new ArrayList<>()));
+            // TODO: Check if item is already in the list.
+            sessionItems.add(item);
+
+            session.setAttribute("sessionItems", sessionItems);
+        }
         
-        List<QuantityItem> sessionItems = Optional.
-                                            ofNullable((List<QuantityItem>) session.getAttribute("sessionItems")).
-                                            orElse((new ArrayList<>()));
-        // TODO: Check if item is already in the list.
-        sessionItems.add(item);
-        
-        session.setAttribute("sessionItems", sessionItems);
         response.sendRedirect(request.getContextPath() + "/cart.jsp");
     }
     
