@@ -40,6 +40,13 @@
                         <td>${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td style="color: red">${item.getQuantity()}</td>
+                        <td>
+                            <form action="removeCart" method="post">
+                                <input type="hidden" name="itemId" value="${item.getItemId()}"/>
+                                <input type="number" id="quantity" name="quantity" required/>
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
