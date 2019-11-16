@@ -7,6 +7,7 @@
 package fi.valo.db;
 
 import fi.valo.model.Customer;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
@@ -20,7 +21,25 @@ public class CustomerTable extends Table {
         super(dataSource);
     }
     
-    public Customer find(String email) {
+    public Customer find(int id) {
+        try {
+            connection = getConnection();
+            
+            statement = connection.prepareStatement("SELECT * FROM customer "
+                                                    + "WHERE customerId = ?");
+            statement.setInt(1, id);
+            
+            resultSet = statement.executeQuery();
+
+            return extractResultSet(resultSet);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return null;
+    }
+    
+    public Customer findByEmail(String email) {
         try {            
             connection = getConnection();
             
@@ -29,19 +48,8 @@ public class CustomerTable extends Table {
             statement.setString(1, email);
             
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Customer customer = new Customer();
-                customer.setCustomerId(resultSet.getInt("customerId"));
-                customer.setFullName(resultSet.getString("fullname"));
-                customer.setEmail(resultSet.getString("email"));
-                customer.setAddressLine1(resultSet.getString("addressline1"));
-                customer.setAddressLine2(resultSet.getString("addressline2"));
-                customer.setPostalCode(resultSet.getString("postalcode"));
-                customer.setMobile(resultSet.getString("mobile"));
-                customer.setPassword(resultSet.getString("password"));
-                
-                return customer;
-            }
+            
+            return extractResultSet(resultSet);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -68,5 +76,39 @@ public class CustomerTable extends Table {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+    }
+    
+    public void updatePassword(int id, String password) {
+        try {
+            connection = getConnection();
+            
+            statement = connection.prepareStatement("UPDATE customer "
+                                                    + "SET password = ? "
+                                                    + "WHERE customerId = ?");
+            statement.setString(1, password);
+            statement.setInt(2, id);
+            
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private Customer extractResultSet(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Customer customer = new Customer();
+            customer.setCustomerId(resultSet.getInt("customerId"));
+            customer.setFullName(resultSet.getString("fullname"));
+            customer.setEmail(resultSet.getString("email"));
+            customer.setAddressLine1(resultSet.getString("addressline1"));
+            customer.setAddressLine2(resultSet.getString("addressline2"));
+            customer.setPostalCode(resultSet.getString("postalcode"));
+            customer.setMobile(resultSet.getString("mobile"));
+            customer.setPassword(resultSet.getString("password"));
+
+            return customer;
+        }
+        
+        return null;
     }
 }

@@ -40,6 +40,9 @@ public class AddCartServlet extends HttpServlet {
         if (itemId > -1 && quantity > 0) {
             ItemTable itemTable = new ItemTable(dataSource);
             QuantityItem item = new QuantityItem(itemTable.find(itemId));
+            
+            itemTable.close();
+            
             // TODO: Only allow max of 20 quantity
             item.setQuantity(quantity);
 

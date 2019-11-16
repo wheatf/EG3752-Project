@@ -32,6 +32,7 @@ public class CalculateTotalPriceServlet extends HttpServlet {
         
         List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
         if (sessionItems != null && sessionItems.size() > 0) {
+            
             BigDecimal totalPrice = BigDecimal.ZERO;
             for (QuantityItem qi : sessionItems) {
                 BigDecimal price = qi.getPrice().multiply(new BigDecimal(qi.getQuantity()));

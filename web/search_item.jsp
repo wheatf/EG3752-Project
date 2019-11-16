@@ -19,7 +19,7 @@
         
         <nav>
             <ul>
-                <li><a href="profile.jsp">Go to my profile</a></li>
+                <li><a href="profile">Go to my profile</a></li>
                 <li><a href="cart.jsp">My shopping cart</a></li>
             </ul>
         </nav>

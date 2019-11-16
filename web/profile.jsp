@@ -18,40 +18,40 @@
         
         <nav>
             <ul>
-                <li><a href="search_item.jsp">Go to list of items</a></li>
+                <li><a href="search">Go to list of items</a></li>
                 <li><a href="cart.jsp">Go to my shopping cart</a></li>
             </ul>
         </nav>
         
         <section>
             <div>
-                <span>Full Name</span>
-                <%--<span>${fullName}</span>--%>
+                <span>Full Name: </span>
+                <span>${customer.getFullName()}</span>
             </div>
             
             <div>
-                <span>Email</span>
-                <%--<span>${email}}--%>
+                <span>Email: </span>
+                <span>${customer.getEmail()}</span>
             </div>
             
             <div>
-                <span>Address Line 1</span>
-                <%--<span>${addressLine1}</span>--%>
+                <span>Address Line 1: </span>
+                <span>${customer.getAddressLine1()}</span>
             </div>
             
             <div>
-                <span>Address Line 2</span>
-                <%--<span>${addressLine2}</span>--%>
+                <span>Address Line 2: </span>
+                <span>${customer.getAddressLine2()}</span>
             </div>
             
             <div>
-                <span>Postal Code</span>
-                <%--<span>${postalCode}</span>--%>
+                <span>Postal Code: </span>
+                <span>${customer.getPostalCode()}</span>
             </div>
             
             <div>
-                <span>Mobile</span>
-                <%--<span>${mobile}</span>--%>
+                <span>Mobile: </span>
+                <span>${customer.getMobile()}</span>
             </div>
         </section>
             

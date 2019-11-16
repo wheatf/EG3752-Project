@@ -34,8 +34,7 @@ public class SearchItemServlet extends HttpServlet {
                         throws ServletException, IOException {
         ItemTable itemTable = new ItemTable(dataSource);
         
-        List<Item> items = itemTable.
-                            findContains(Optional.ofNullable(request.
+        List<Item> items = itemTable.findByItemDescription(Optional.ofNullable(request.
                                                             getParameter("searchItemName")).
                                                             orElse(""));
         

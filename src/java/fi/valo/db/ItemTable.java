@@ -48,7 +48,7 @@ public class ItemTable extends Table {
         return null;
     }
     
-    public List<Item> findContains(String itemDescription) {
+    public List<Item> findByItemDescription(String itemDescription) {
         try {
             connection = getConnection();
             
