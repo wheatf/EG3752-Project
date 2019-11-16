@@ -29,21 +29,26 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                             HttpServletResponse response) 
                         throws ServletException, IOException {
-        CustomerTable customerTable = new CustomerTable(dataSource);
+        if (request.getParameter("password").equals(request.getParameter("confirmPassword"))) {
+            CustomerTable customerTable = new CustomerTable(dataSource);
+
+            Customer customer = new Customer();
+            customer.setFullName(request.getParameter("fullName"));
+            customer.setEmail(request.getParameter("email"));
+            customer.setAddressLine1(request.getParameter("addressLine1"));
+            customer.setAddressLine2(request.getParameter("addressLine2"));
+            customer.setPostalCode(request.getParameter("postalCode"));
+            customer.setMobile(request.getParameter("mobile"));
+            customer.setPassword(request.getParameter("password"));
+
+            customerTable.add(customer);
+            customerTable.close();
+
+            response.sendRedirect(request.getContextPath() + "/register_success.html");
+            return;
+        }
         
-        Customer customer = new Customer();
-        customer.setFullName(request.getParameter("fullName"));
-        customer.setEmail(request.getParameter("email"));
-        customer.setAddressLine1(request.getParameter("addressLine1"));
-        customer.setAddressLine2(request.getParameter("addressLine2"));
-        customer.setPostalCode(request.getParameter("postalCode"));
-        customer.setMobile(request.getParameter("mobile"));
-        customer.setPassword(request.getParameter("password"));
-        
-        customerTable.add(customer);
-        customerTable.close();
-        
-        response.sendRedirect(request.getContextPath() + "/register_success.html");
+        request.getRequestDispatcher("register.html").forward(request, response);
     }
     
 }
