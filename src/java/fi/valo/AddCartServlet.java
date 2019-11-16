@@ -7,7 +7,6 @@
 package fi.valo;
 
 import fi.valo.db.ItemTable;
-import fi.valo.model.Item;
 import fi.valo.model.QuantityItem;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class AddCartServlet extends HttpServlet {
             session.setAttribute("sessionItems", sessionItems);
         }
         
-        response.sendRedirect(request.getContextPath() + "/cart.jsp");
+        request.getRequestDispatcher("calculateTotalPrice").forward(request, response);
     }
     
 }

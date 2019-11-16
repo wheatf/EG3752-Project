@@ -50,6 +50,6 @@ public class RemoveCartServlet extends HttpServlet {
             }
         }
         
-        response.sendRedirect(request.getContextPath() + "/cart.jsp");
+        request.getRequestDispatcher("calculateTotalPrice").forward(request, response);
     }
 }

@@ -55,7 +55,7 @@
                     <tr>
                         <td>${item.getItemDescription()}</td>
                         <td>${item.getBrand()}</td>
-                        <td>${item.getPrice()}</td>
+                        <td>$${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td>
                             <form action="addCart" method="post">

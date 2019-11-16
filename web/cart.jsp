@@ -37,7 +37,7 @@
                     <tr>
                         <td>${item.getItemDescription()}</td>
                         <td>${item.getBrand()}</td>
-                        <td>${item.getPrice()}</td>
+                        <td>$${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td style="color: red">${item.getQuantity()}</td>
                         <td>
@@ -50,6 +50,11 @@
                     </tr>
                 </c:forEach>
             </table>
+        </section>
+        
+        <section>
+            <div>Total Price: $${totalPrice}</div>
+            <div>Total Points Redeemable: ${totalPoints}</div>
         </section>
             
         <section>
