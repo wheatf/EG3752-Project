@@ -40,7 +40,10 @@ public class ChangePasswordServlet extends HttpServlet {
             String currentPassword = (String)request.getParameter("currentPassword");
             
             CustomerTable customerTable = new CustomerTable(dataSource);
-            if (currentPassword.equals(customerTable.find(customerId).getPassword())) {
+            String oldPassword = customerTable.find(customerId).getPassword();
+            customerTable.close();
+            
+            if (currentPassword.equals(oldPassword)) {
                 customerTable.updatePassword(customerId, newPassword);
                 
                 response.sendRedirect(request.getContextPath() + "/change_password_success.html");
