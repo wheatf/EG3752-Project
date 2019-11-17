@@ -41,14 +41,17 @@ public class ChangePasswordServlet extends HttpServlet {
             
             CustomerTable customerTable = new CustomerTable(dataSource);
             String oldPassword = customerTable.find(customerId).getPassword();
-            customerTable.close();
             
             if (currentPassword.equals(oldPassword)) {
                 customerTable.updatePassword(customerId, newPassword);
                 
+                customerTable.close();
+                
                 response.sendRedirect(request.getContextPath() + "/change_password_success.html");
                 return;
             }
+            
+            customerTable.close();
         }
         
         request.getRequestDispatcher("change_password.html").forward(request, response);
