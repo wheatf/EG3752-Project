@@ -29,15 +29,17 @@ public class CalculateTotalPointsServlet extends HttpServlet {
                         throws ServletException, IOException {
         HttpSession session = request.getSession();
         
+        int totalPoints = 0;
+        
         List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
         if (sessionItems != null && sessionItems.size() > 0) {
-            int totalPoints = 0;
+            
             for (QuantityItem qi : sessionItems) {
                 totalPoints += qi.getPoints() * qi.getQuantity();
             }
-            
-            session.setAttribute("totalPoints", totalPoints);
         }
+        
+        session.setAttribute("totalPoints", totalPoints);
         
         response.sendRedirect("cart.jsp");
     }

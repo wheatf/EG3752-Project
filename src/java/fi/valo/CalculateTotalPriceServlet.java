@@ -30,18 +30,19 @@ public class CalculateTotalPriceServlet extends HttpServlet {
                         throws ServletException, IOException {
         HttpSession session = request.getSession();
         
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        
         List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
         if (sessionItems != null && sessionItems.size() > 0) {
             
-            BigDecimal totalPrice = BigDecimal.ZERO;
             for (QuantityItem qi : sessionItems) {
                 BigDecimal price = qi.getPrice().multiply(new BigDecimal(qi.getQuantity()));
                 
                 totalPrice = totalPrice.add(price);
             }
-            
-            session.setAttribute("totalPrice", totalPrice);
         }
+        
+        session.setAttribute("totalPrice", totalPrice);
         
         request.getRequestDispatcher("calculateTotalPoints").forward(request, response);
     }
