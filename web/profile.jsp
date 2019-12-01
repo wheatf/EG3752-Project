@@ -20,6 +20,7 @@
             <ul>
                 <li><a href="search">Go to list of items</a></li>
                 <li><a href="cart.jsp">Go to my shopping cart</a></li>
+                <li><a href="showOrders">View placed orders</a></li>
             </ul>
         </nav>
         
