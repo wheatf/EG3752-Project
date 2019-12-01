@@ -39,6 +39,7 @@ public class RegisterServlet extends HttpServlet {
             customer.setAddressLine2(request.getParameter("addressLine2"));
             customer.setPostalCode(request.getParameter("postalCode"));
             customer.setMobile(request.getParameter("mobile"));
+            // TODO: Hash password with SHA-256
             customer.setPassword(request.getParameter("password"));
 
             customerTable.add(customer);

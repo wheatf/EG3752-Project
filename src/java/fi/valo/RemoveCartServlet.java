@@ -42,10 +42,13 @@ public class RemoveCartServlet extends HttpServlet {
                         break;
                     }
                 }
-
-                // TODO: Remove item from session if it is empty.
+                
                 if (item != null && item.getQuantity() - quantity >= 0) {
                     item.setQuantity(item.getQuantity() - quantity);
+                    
+                    if (item.getQuantity() == 0) {
+                        sessionItems.remove(item);
+                    }
                 }
             }
         }
