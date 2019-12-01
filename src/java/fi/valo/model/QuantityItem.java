@@ -35,4 +35,30 @@ public class QuantityItem extends Item implements Serializable{
     public int getQuantity(){
         return quantity;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = super.hashCode();
+        hash = 29 * hash + this.quantity;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final QuantityItem other = (QuantityItem) obj;
+        if (this.quantity != other.quantity) {
+            return false;
+        }
+        
+        return super.equals(obj);
+    }
+    
+    
 }

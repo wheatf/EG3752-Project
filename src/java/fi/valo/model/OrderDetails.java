@@ -43,4 +43,34 @@ public class OrderDetails implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + this.orderId;
+        hash = 59 * hash + this.itemId;
+        hash = 59 * hash + this.quantity;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final OrderDetails other = (OrderDetails) obj;
+        if (this.orderId != other.orderId) {
+            return false;
+        }
+        if (this.itemId != other.itemId) {
+            return false;
+        }
+        
+        return this.quantity == other.quantity;
+    }
+    
 }

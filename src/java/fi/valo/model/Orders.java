@@ -9,6 +9,7 @@ package fi.valo.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  *
@@ -62,5 +63,41 @@ public class Orders implements Serializable {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + this.orderId;
+        hash = 11 * hash + this.customerId;
+        hash = 11 * hash + Objects.hashCode(this.orderPrice);
+        hash = 11 * hash + this.orderPoints;
+        hash = 11 * hash + Objects.hashCode(this.timestamp);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Orders other = (Orders) obj;
+        if (this.orderId != other.orderId) {
+            return false;
+        }
+        if (this.customerId != other.customerId) {
+            return false;
+        }
+        if (!Objects.equals(this.orderPrice, other.orderPrice)) {
+            return false;
+        }
+        if (this.orderPoints != other.orderPoints) {
+            return false;
+        }
+        
+        return Objects.equals(this.timestamp, other.timestamp);
     }
 }
