@@ -43,7 +43,6 @@ public class AddCartServlet extends HttpServlet {
             
             itemTable.close();
             
-            // TODO: Only allow max of 20 quantity
             item.setQuantity(quantity);
 
             HttpSession session = request.getSession();
@@ -51,9 +50,23 @@ public class AddCartServlet extends HttpServlet {
             List<QuantityItem> sessionItems = Optional.
                                                 ofNullable((List<QuantityItem>) session.getAttribute("sessionItems")).
                                                 orElse((new ArrayList<>()));
-            // TODO: Check if item is already in the list.
-            sessionItems.add(item);
-
+            
+            if (sessionItems.contains(item)) {
+                QuantityItem currentItem = sessionItems.get(sessionItems.indexOf(item));
+                
+                currentItem.setQuantity(currentItem.getQuantity() + quantity);
+                
+                if (currentItem.getQuantity() > 20) {
+                    currentItem.setQuantity(20);
+                }
+            } else {
+                if (item.getQuantity() > 20) {
+                    item.setQuantity(20);
+                }
+                
+                sessionItems.add(item);
+            }
+            
             session.setAttribute("sessionItems", sessionItems);
         }
         
