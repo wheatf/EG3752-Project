@@ -68,11 +68,7 @@ public class Orders implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 11 * hash + this.orderId;
-        hash = 11 * hash + this.customerId;
-        hash = 11 * hash + Objects.hashCode(this.orderPrice);
-        hash = 11 * hash + this.orderPoints;
-        hash = 11 * hash + Objects.hashCode(this.timestamp);
+        hash = 61 * hash + this.orderId;
         return hash;
     }
 
@@ -85,19 +81,7 @@ public class Orders implements Serializable {
             return false;
         }
         final Orders other = (Orders) obj;
-        if (this.orderId != other.orderId) {
-            return false;
-        }
-        if (this.customerId != other.customerId) {
-            return false;
-        }
-        if (!Objects.equals(this.orderPrice, other.orderPrice)) {
-            return false;
-        }
-        if (this.orderPoints != other.orderPoints) {
-            return false;
-        }
         
-        return Objects.equals(this.timestamp, other.timestamp);
+        return this.orderId == other.orderId;
     }
 }

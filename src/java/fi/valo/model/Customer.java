@@ -92,15 +92,8 @@ public class Customer implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 29 * hash + this.customerId;
-        hash = 29 * hash + Objects.hashCode(this.fullName);
-        hash = 29 * hash + Objects.hashCode(this.email);
-        hash = 29 * hash + Objects.hashCode(this.addressLine1);
-        hash = 29 * hash + Objects.hashCode(this.addressLine2);
-        hash = 29 * hash + Objects.hashCode(this.postalCode);
-        hash = 29 * hash + Objects.hashCode(this.mobile);
-        hash = 29 * hash + Objects.hashCode(this.password);
+        int hash = 3;
+        hash = 23 * hash + this.customerId;
         return hash;
     }
 
@@ -112,31 +105,8 @@ public class Customer implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        
         final Customer other = (Customer) obj;
-        if (this.customerId != other.customerId) {
-            return false;
-        }
-        if (!Objects.equals(this.fullName, other.fullName)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.addressLine1, other.addressLine1)) {
-            return false;
-        }
-        if (!Objects.equals(this.addressLine2, other.addressLine2)) {
-            return false;
-        }
-        if (!Objects.equals(this.postalCode, other.postalCode)) {
-            return false;
-        }
-        if (!Objects.equals(this.mobile, other.mobile)) {
-            return false;
-        }
-        return Objects.equals(this.password, other.password);
+        
+        return this.customerId == other.customerId;
     }
-    
-    
 }

@@ -8,7 +8,6 @@ package fi.valo.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  *
@@ -66,12 +65,8 @@ public class Item implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + this.itemId;
-        hash = 89 * hash + Objects.hashCode(this.itemDescription);
-        hash = 89 * hash + Objects.hashCode(this.brand);
-        hash = 89 * hash + Objects.hashCode(this.price);
-        hash = 89 * hash + this.points;
+        int hash = 7;
+        hash = 41 * hash + this.itemId;
         return hash;
     }
 
@@ -83,20 +78,8 @@ public class Item implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        
         final Item other = (Item) obj;
-        if (this.itemId != other.itemId) {
-            return false;
-        }
-        if (!Objects.equals(this.itemDescription, other.itemDescription)) {
-            return false;
-        }
-        if (!Objects.equals(this.brand, other.brand)) {
-            return false;
-        }
-        if (!Objects.equals(this.price, other.price)) {
-            return false;
-        }
-        return this.points == other.points;
+        
+        return this.itemId == other.itemId;
     }
 }

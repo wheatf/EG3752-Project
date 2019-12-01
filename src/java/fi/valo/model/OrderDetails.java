@@ -46,10 +46,9 @@ public class OrderDetails implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + this.orderId;
-        hash = 59 * hash + this.itemId;
-        hash = 59 * hash + this.quantity;
+        int hash = 3;
+        hash = 79 * hash + this.orderId;
+        hash = 79 * hash + this.itemId;
         return hash;
     }
 
@@ -61,16 +60,11 @@ public class OrderDetails implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        
         final OrderDetails other = (OrderDetails) obj;
         if (this.orderId != other.orderId) {
             return false;
         }
-        if (this.itemId != other.itemId) {
-            return false;
-        }
         
-        return this.quantity == other.quantity;
+        return this.itemId == other.itemId;
     }
-    
 }

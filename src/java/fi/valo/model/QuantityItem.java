@@ -38,9 +38,7 @@ public class QuantityItem extends Item implements Serializable{
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 29 * hash + this.quantity;
-        return hash;
+        return super.hashCode();
     }
 
     @Override
@@ -52,13 +50,6 @@ public class QuantityItem extends Item implements Serializable{
             return false;
         }
         
-        final QuantityItem other = (QuantityItem) obj;
-        if (this.quantity != other.quantity) {
-            return false;
-        }
-        
         return super.equals(obj);
     }
-    
-    
 }
