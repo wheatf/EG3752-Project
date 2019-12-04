@@ -8,6 +8,8 @@ package fi.valo;
 import fi.valo.db.CustomerTable;
 import fi.valo.model.Customer;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,6 +45,10 @@ public class LoginServlet extends HttpServlet {
             }
         }
         
-        request.getRequestDispatcher("/login.html").forward(request, response);
+        List<String> errors = new ArrayList<>();
+        errors.add("Wrong email and/or password! Try again.");
+        
+        request.getSession().setAttribute("errors", errors);
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
 }
