@@ -6,14 +6,18 @@
 
 package fi.valo.validation;
 
+import fi.valo.db.CustomerTable;
+import fi.valo.model.Customer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
@@ -23,6 +27,9 @@ import org.apache.commons.validator.routines.EmailValidator;
 @WebServlet("/loginValidation")
 public class LoginValidationServlet extends HttpServlet {
 
+    @Resource(name = "jdbc/velo")
+    private DataSource dataSource;
+    
     @Override
     protected void doPost(HttpServletRequest request, 
                             HttpServletResponse response) 
@@ -38,7 +45,7 @@ public class LoginValidationServlet extends HttpServlet {
         } else if (!emailValidator.isValid(email)) {
             errors.add("Email must be a valid email address!");
         }
-        
+
         if (password.trim().isEmpty()) {
             errors.add("Password must not be empty!");
         }
@@ -47,7 +54,17 @@ public class LoginValidationServlet extends HttpServlet {
             request.getSession().setAttribute("errors", errors);
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         } else {
-            request.getRequestDispatcher("login").forward(request, response);
+            CustomerTable customerTable = new CustomerTable(dataSource);
+            Customer customer = customerTable.findByEmail(email);
+            customerTable.close();
+            
+            if (customer != null && password.equals(customer.getPassword())) {
+                request.getRequestDispatcher("login").forward(request, response);
+            } else {
+                errors.add("Wrong email and/or password! Try again.");
+                request.getSession().setAttribute("errors", errors);
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+            }
         }
     }
 }

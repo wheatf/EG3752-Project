@@ -36,19 +36,7 @@ public class LoginServlet extends HttpServlet {
         Customer customer = customerTable.findByEmail(request.getParameter("email"));
         customerTable.close();
         
-        if (customer != null)
-        {
-            if (customer.getPassword().equals(request.getParameter("password"))) {
-                request.getSession().setAttribute("customerId", customer.getCustomerId());
-                response.sendRedirect(request.getContextPath() + "/search");
-                return;
-            }
-        }
-        
-        List<String> errors = new ArrayList<>();
-        errors.add("Wrong email and/or password! Try again.");
-        
-        request.getSession().setAttribute("errors", errors);
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        request.getSession().setAttribute("customerId", customer.getCustomerId());
+        response.sendRedirect(request.getContextPath() + "/search");
     }
 }
