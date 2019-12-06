@@ -13,7 +13,7 @@
         <title>Log in</title>
     </head>
     
-    <body>        
+    <body>
         <header>
             <h1>Log in to the portal</h1>
         </header>
@@ -21,7 +21,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">Back to main page</a></li>
-                <li><a href="register.html">Register a new account</a></li>
+                <li><a href="register.jsp">Register a new account</a></li>
             </ul>
         </nav>
         

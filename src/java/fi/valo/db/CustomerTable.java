@@ -67,7 +67,7 @@ public class CustomerTable extends Table {
             statement.setString(1, customer.getFullName());
             statement.setString(2, customer.getEmail());
             statement.setString(3, customer.getAddressLine1());
-            statement.setString(4, customer.getAddressLine2().isEmpty() ? null : customer.getAddressLine2());
+            statement.setString(4, customer.getAddressLine2().trim().isEmpty() ? null : customer.getAddressLine2());
             statement.setString(5, customer.getPostalCode());
             statement.setString(6, customer.getMobile());
             statement.setString(7, customer.getPassword());
