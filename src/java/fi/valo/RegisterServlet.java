@@ -41,8 +41,10 @@ public class RegisterServlet extends HttpServlet {
         // TODO: Hash password with SHA-256
         customer.setPassword(request.getParameter("password"));
 
-        customerTable.add(customer);
+        int customerId = customerTable.add(customer);
         customerTable.close();
+        
+        request.getSession().setAttribute("customerId", customerId);
 
         response.sendRedirect(request.getContextPath() + "/register_success.html");
     }

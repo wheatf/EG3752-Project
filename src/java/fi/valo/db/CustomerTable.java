@@ -9,6 +9,7 @@ package fi.valo.db;
 import fi.valo.model.Customer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.sql.DataSource;
 
 /**
@@ -57,13 +58,14 @@ public class CustomerTable extends Table {
         return null;
     }
     
-    public void add(Customer customer) {
+    public int add(Customer customer) {
         try {  
             connection = getConnection();
             
             statement = connection.prepareStatement("INSERT INTO customer "
                     + "(fullname, email, addressline1, addressline2, postalcode, mobile, password)"
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, customer.getFullName());
             statement.setString(2, customer.getEmail());
             statement.setString(3, customer.getAddressLine1());
@@ -73,9 +75,17 @@ public class CustomerTable extends Table {
             statement.setString(7, customer.getPassword());
             
             statement.executeUpdate();
+            
+            resultSet = statement.getGeneratedKeys();
+            
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+        
+        return -1;
     }
     
     public void updatePassword(int id, String password) {
