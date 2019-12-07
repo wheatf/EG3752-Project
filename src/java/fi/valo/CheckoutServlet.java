@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fi.valo;
 
+import fi.valo.db.CustomerTable;
 import fi.valo.db.OrderDetailsTable;
 import fi.valo.db.OrdersTable;
 import fi.valo.model.OrderDetails;
@@ -29,51 +29,52 @@ import javax.sql.DataSource;
  */
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+
     @Resource(name = "jdbc/velo")
     private DataSource dataSource;
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, 
-                            HttpServletResponse response) 
-                        throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("customerId") != null
-                && session.getAttribute("totalPrice") != null 
-                && session.getAttribute("totalPoints") != null) {
-            
-            OrdersTable ordersTable = new OrdersTable(dataSource);
-            Orders orders = new Orders();
-            
-            orders.setCustomerId((int)session.getAttribute("customerId"));
-            orders.setOrderPrice((BigDecimal)session.getAttribute("totalPrice"));
-            orders.setOrderPoints((int)session.getAttribute("totalPoints"));
-            
-            int generatedId = ordersTable.add(orders);
-            
-            ordersTable.close();
-            
-            if (generatedId >= 0) {
-                OrderDetailsTable orderDetailsTable = new OrderDetailsTable(dataSource);
-                
-                List<QuantityItem> sessionItems = (List<QuantityItem>)session.getAttribute("sessionItems");
-                for (QuantityItem qi : sessionItems) {
-                    OrderDetails orderDetails = new OrderDetails();
-                    
-                    orderDetails.setOrderId(generatedId);
-                    orderDetails.setItemId(qi.getItemId());
-                    orderDetails.setQuantity(qi.getQuantity());
-                    
-                    orderDetailsTable.add(orderDetails);
-                }
-                
-                orderDetailsTable.close();
+
+        OrdersTable ordersTable = new OrdersTable(dataSource);
+        Orders orders = new Orders();
+
+        orders.setCustomerId((int) session.getAttribute("customerId"));
+        orders.setOrderPrice((BigDecimal) session.getAttribute("totalPrice"));
+        orders.setOrderPoints((int) session.getAttribute("totalPoints"));
+
+        int generatedId = ordersTable.add(orders);
+
+        ordersTable.close();
+
+        if (generatedId >= 0) {
+            OrderDetailsTable orderDetailsTable = new OrderDetailsTable(dataSource);
+
+            List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
+            for (QuantityItem qi : sessionItems) {
+                OrderDetails orderDetails = new OrderDetails();
+
+                orderDetails.setOrderId(generatedId);
+                orderDetails.setItemId(qi.getItemId());
+                orderDetails.setQuantity(qi.getQuantity());
+
+                orderDetailsTable.add(orderDetails);
             }
+
+            orderDetailsTable.close();
+
+            CustomerTable customerTable = new CustomerTable(dataSource);
+            String customerName = customerTable.find((int) session.getAttribute("customerId")).getFullName();
+            customerTable.close();
+            
+            session.setAttribute("customerName", customerName);
+            session.removeAttribute("sessionItems");
+
+            response.sendRedirect("checkout_success.jsp");
+
         }
-        
-        session.removeAttribute("sessionItems");
-        session.removeAttribute("totalPrice");
-        session.removeAttribute("totalPoints");
-        
-        response.sendRedirect("checkout_success.html");
-    }   
+    }
 }
