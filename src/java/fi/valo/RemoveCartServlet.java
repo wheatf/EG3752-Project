@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fi.valo;
 
 import fi.valo.model.QuantityItem;
@@ -22,37 +21,36 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/removeCart")
 public class RemoveCartServlet extends HttpServlet {
+
     @Override
-    protected void doPost(HttpServletRequest request, 
-                            HttpServletResponse response) 
-                    throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
         int itemId = Integer.parseInt(request.getParameter("itemId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-        
-        if (itemId > -1 && quantity > 0) {
-            HttpSession session = request.getSession();
 
-            List<QuantityItem> sessionItems = ((List<QuantityItem>) session.getAttribute("sessionItems"));
-            if (sessionItems != null && sessionItems.size() > 0) {
+        HttpSession session = request.getSession();
 
-                QuantityItem item = null;
-                for (QuantityItem qi : sessionItems) {
-                    if (qi.getItemId() == itemId) {
-                        item = qi;
-                        break;
-                    }
-                }
-                
-                if (item != null && item.getQuantity() - quantity >= 0) {
-                    item.setQuantity(item.getQuantity() - quantity);
-                    
-                    if (item.getQuantity() == 0) {
-                        sessionItems.remove(item);
-                    }
-                }
+        List<QuantityItem> sessionItems = ((List<QuantityItem>) session.getAttribute("sessionItems"));
+        QuantityItem item = null;
+        for (QuantityItem qi : sessionItems) {
+            if (qi.getItemId() == itemId) {
+                item = qi;
+                break;
             }
         }
         
-        request.getRequestDispatcher("calculateTotalPrice").forward(request, response);
+        item.setQuantity(item.getQuantity() - quantity);
+
+        if (item.getQuantity() == 0) {
+            sessionItems.remove(item);
+        }
+
+        request.getRequestDispatcher("calculateTotalPrice").include(request, response);
+        request.getRequestDispatcher("calculateTotalPoints").include(request, response);
+
+        request.getSession().setAttribute("success", quantity + " of " + item.getItemDescription() + " are removed from the cart!");
+        
+        response.sendRedirect(request.getContextPath() + "/cart.jsp");
     }
 }

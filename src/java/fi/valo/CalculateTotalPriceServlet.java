@@ -43,7 +43,5 @@ public class CalculateTotalPriceServlet extends HttpServlet {
         }
         
         session.setAttribute("totalPrice", totalPrice);
-        
-        request.getRequestDispatcher("calculateTotalPoints").forward(request, response);
     }
 }

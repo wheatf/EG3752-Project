@@ -24,43 +24,77 @@
             </ul>
         </nav>
         
-        <section>
-            <table>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Points Redeemable</th>
-                    <th style="color: red">Items In Cart</th>
-                </tr>
-                <c:forEach items="${sessionItems}" var="item">
-                    <tr>
-                        <td>${item.getItemDescription()}</td>
-                        <td>${item.getBrand()}</td>
-                        <td>$${item.getPrice()}</td>
-                        <td>${item.getPoints()}</td>
-                        <td style="color: red">${item.getQuantity()}</td>
-                        <td>
-                            <form action="removeCart" method="post">
-                                <input type="hidden" name="itemId" value="${item.getItemId()}"/>
-                                <input type="number" id="quantity" name="quantity" required/>
-                                <button type="submit">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </section>
-        
-        <section>
-            <div>Total Price: $${totalPrice}</div>
-            <div>Total Points Redeemable: ${totalPoints}</div>
-        </section>
+        <c:choose>
+            <c:when test="${errors != null && errors.size() > 0}">
+                <section style="color: red">
+                    <ul>
+                        <c:forEach items="${errors}" var="error">
+                            <li>${error}</li>
+                        </c:forEach>
+                    </ul>
+                </section>
+                
+                <c:remove var="errors" />
+            </c:when>
             
-        <section>
-            <div>
-                <a href="checkout.jsp">Proceed to checkout</a>
-            </div>
-        </section>
+            <c:when test="${success != null}">
+                <section style="color: blue">
+                    <ul>
+                        <li>${success}</li>
+                    </ul>
+                </section>
+                    
+                <c:remove var="success" />
+            </c:when>
+        </c:choose>
+        
+        <c:choose>
+            <c:when test="${sessionItems != null && sessionItems.size() > 0}">
+                <section>
+                    <table>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Brand</th>
+                            <th>Price</th>
+                            <th>Points Redeemable</th>
+                            <th style="color: red">Items In Cart</th>
+                        </tr>
+                        <c:forEach items="${sessionItems}" var="item">
+                            <tr>
+                                <td>${item.getItemDescription()}</td>
+                                <td>${item.getBrand()}</td>
+                                <td>$${item.getPrice()}</td>
+                                <td>${item.getPoints()}</td>
+                                <td style="color: red">${item.getQuantity()}</td>
+                                <td>
+                                    <form action="removeCartValidation" method="post">
+                                        <input type="hidden" name="itemId" value="${item.getItemId()}"/>
+                                        <input type="number" id="quantity" name="quantity"/>
+                                        <button type="submit">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </section>
+
+                <section>
+                    <div>Total Price: $${totalPrice}</div>
+                    <div>Total Points Redeemable: ${totalPoints}</div>
+
+                    <div>
+                        <a href="checkout.jsp">Proceed to checkout</a>
+                    </div>
+                </section>
+            </c:when>
+            
+            <c:otherwise>
+                <section>
+                    <span>
+                        Your cart is empty! <a href="search">Go to list of items?</a>
+                    </span>
+                </section>
+            </c:otherwise>
+        </c:choose>
     </body>
 </html>

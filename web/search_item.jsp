@@ -43,6 +43,30 @@
             </form>
         </section>
         
+        <c:choose>
+            <c:when test="${errors != null && errors.size() > 0}">
+                <section style="color: red">
+                    <ul>
+                        <c:forEach items="${errors}" var="error">
+                            <li>${error}</li>
+                        </c:forEach>
+                    </ul>
+                </section>
+                
+                <c:remove var="errors" />
+            </c:when>
+            
+            <c:when test="${success != null}">
+                <section style="color: blue">
+                    <ul>
+                        <li>${success}</li>
+                    </ul>
+                </section>
+                    
+                <c:remove var="success" />
+            </c:when>
+        </c:choose>
+        
         <section>
             <table>
                 <tr>
@@ -58,9 +82,9 @@
                         <td>$${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td>
-                            <form action="addCart" method="post">
+                            <form action="addCartValidation" method="post">
                                 <input type="hidden" name="itemId" value="${item.getItemId()}"/>
-                                <input type="number" id="quantity" name="quantity" required/>
+                                <input type="text" id="quantity" name="quantity"/>
                                 <button type="submit">Add to cart</button>
                             </form>
                         </td>

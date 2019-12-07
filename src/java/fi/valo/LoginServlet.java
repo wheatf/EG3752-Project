@@ -8,8 +8,6 @@ package fi.valo;
 import fi.valo.db.CustomerTable;
 import fi.valo.model.Customer;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

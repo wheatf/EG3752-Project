@@ -40,7 +40,5 @@ public class CalculateTotalPointsServlet extends HttpServlet {
         }
         
         session.setAttribute("totalPoints", totalPoints);
-        
-        response.sendRedirect("cart.jsp");
     }
 }
