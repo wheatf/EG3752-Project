@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fi.valo;
 
 import fi.valo.db.CustomerTable;
@@ -23,37 +22,25 @@ import javax.sql.DataSource;
  */
 @WebServlet("/changePassword")
 public class ChangePasswordServlet extends HttpServlet {
+
     @Resource(name = "jdbc/velo")
     private DataSource dataSource;
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, 
-                            HttpServletResponse response) 
-                    throws ServletException, IOException {
-        String newPassword = (String)request.getParameter("newPassword");
-        String confirmPassword = (String)request.getParameter("confirmPassword");
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        String newPassword = request.getParameter("newPassword");
         
-        if (newPassword.equals(confirmPassword)) {
-            HttpSession session = request.getSession();
-            int customerId = (int)session.getAttribute("customerId");
-            
-            String currentPassword = (String)request.getParameter("currentPassword");
-            
-            CustomerTable customerTable = new CustomerTable(dataSource);
-            String oldPassword = customerTable.find(customerId).getPassword();
-            
-            if (currentPassword.equals(oldPassword)) {
-                customerTable.updatePassword(customerId, newPassword);
-                
-                customerTable.close();
-                
-                response.sendRedirect(request.getContextPath() + "/change_password_success.html");
-                return;
-            }
-            
-            customerTable.close();
-        }
-        
-        request.getRequestDispatcher("change_password.html").forward(request, response);
+        HttpSession session = request.getSession();
+        int customerId = (int) session.getAttribute("customerId");
+
+        CustomerTable customerTable = new CustomerTable(dataSource);
+
+        customerTable.updatePassword(customerId, newPassword);
+
+        customerTable.close();
+
+        response.sendRedirect(request.getContextPath() + "/change_password_success.html");
     }
 }

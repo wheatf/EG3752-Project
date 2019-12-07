@@ -57,7 +57,7 @@
         </section>
             
         <section>
-            <a href="change_password.html">Change password</a>
+            <a href="change_password.jsp">Change password</a>
         </section>
             
         <section>
