@@ -40,7 +40,7 @@
                     <tr>
                         <td>${item.getItemDescription()}</td>
                         <td>${item.getBrand()}</td>
-                        <td>${item.getPrice()}</td>
+                        <td>$${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td style="color: red">${item.getQuantity()}</td>
                     </tr>

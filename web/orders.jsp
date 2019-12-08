@@ -35,7 +35,7 @@
                 
                 <c:forEach items="${orders}" var="order">
                     <tr>
-                        <td>${order.getOrderPrice()}</td>
+                        <td>$${order.getOrderPrice()}</td>
                         <td>${order.getOrderPoints()}</td>
                         <td><fmt:formatDate value="${order.getTimestamp()}" pattern="dd/MM/yyyy" /></td>
                         <td><fmt:formatDate value="${order.getTimestamp()}" pattern="hh:mm a" /></td>
