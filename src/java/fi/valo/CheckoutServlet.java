@@ -13,6 +13,7 @@ import fi.valo.model.Orders;
 import fi.valo.model.QuantityItem;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -38,43 +39,36 @@ public class CheckoutServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
-        OrdersTable ordersTable = new OrdersTable(dataSource);
+        
+        OrderDetailsTable orderDetailsTable = new OrderDetailsTable(dataSource);
         Orders orders = new Orders();
-
+        
         orders.setCustomerId((int) session.getAttribute("customerId"));
         orders.setOrderPrice((BigDecimal) session.getAttribute("totalPrice"));
         orders.setOrderPoints((int) session.getAttribute("totalPoints"));
-
-        int generatedId = ordersTable.add(orders);
-
-        ordersTable.close();
-
-        if (generatedId >= 0) {
-            OrderDetailsTable orderDetailsTable = new OrderDetailsTable(dataSource);
-
-            List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
-            for (QuantityItem qi : sessionItems) {
-                OrderDetails orderDetails = new OrderDetails();
-
-                orderDetails.setOrderId(generatedId);
-                orderDetails.setItemId(qi.getItemId());
-                orderDetails.setQuantity(qi.getQuantity());
-
-                orderDetailsTable.add(orderDetails);
-            }
-
-            orderDetailsTable.close();
-
-            CustomerTable customerTable = new CustomerTable(dataSource);
-            String customerName = customerTable.find((int) session.getAttribute("customerId")).getFullName();
-            customerTable.close();
+        
+        List<OrderDetails> orderDetailsList = new ArrayList<>();
+        List<QuantityItem> sessionItems = (List<QuantityItem>) session.getAttribute("sessionItems");
+        for (QuantityItem qi : sessionItems) {
+            OrderDetails orderDetails = new OrderDetails();
             
-            session.setAttribute("customerName", customerName);
-            session.removeAttribute("sessionItems");
-
-            response.sendRedirect("checkout_success.jsp");
-
+            orderDetails.setItemId(qi.getItemId());
+            orderDetails.setQuantity(qi.getQuantity());
+            
+            orderDetailsList.add(orderDetails);
         }
+        
+        orderDetailsTable.add(orders, orderDetailsList);
+        
+        orderDetailsTable.close();
+        
+        CustomerTable customerTable = new CustomerTable(dataSource);
+        String customerName = customerTable.find((int) session.getAttribute("customerId")).getFullName();
+        customerTable.close();
+
+        session.setAttribute("customerName", customerName);
+        session.removeAttribute("sessionItems");
+
+        response.sendRedirect("checkout_success.jsp");
     }
 }

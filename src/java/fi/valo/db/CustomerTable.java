@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fi.valo.db;
 
 import fi.valo.model.Customer;
@@ -23,47 +22,47 @@ public class CustomerTable extends Table {
     public CustomerTable(DataSource dataSource) {
         super(dataSource);
     }
-    
+
     public Customer find(int id) {
         try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("SELECT * FROM customer "
-                                                    + "WHERE customerId = ?");
+                    + "WHERE customerId = ?");
             statement.setInt(1, id);
-            
+
             resultSet = statement.executeQuery();
 
             return extractResultSet(resultSet);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return null;
     }
-    
+
     public Customer findByEmail(String email) {
-        try {            
+        try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("SELECT * FROM customer "
-                                                    + "WHERE email = ?");
+                    + "WHERE email = ?");
             statement.setString(1, email);
-            
+
             resultSet = statement.executeQuery();
-            
+
             return extractResultSet(resultSet);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return null;
     }
-    
+
     public int add(Customer customer) {
-        try {  
+        try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("INSERT INTO customer "
                     + "(fullname, email, addressline1, addressline2, postalcode, mobile, password)"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -75,37 +74,43 @@ public class CustomerTable extends Table {
             statement.setString(5, customer.getPostalCode());
             statement.setString(6, customer.getMobile());
             statement.setString(7, Base64.getEncoder().encodeToString(Digest.sha256(customer.getPassword())));
-            
+
             statement.executeUpdate();
-            
+
             resultSet = statement.getGeneratedKeys();
-            
+
             if (resultSet.next()) {
+                commit();
                 return resultSet.getInt(1);
+            } else {
+                rollback();
             }
         } catch (SQLException ex) {
+            rollback();
             System.err.println(ex.getMessage());
         }
-        
+
         return -1;
     }
-    
+
     public void updatePassword(int id, String password) {
         try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("UPDATE customer "
-                                                    + "SET password = ? "
-                                                    + "WHERE customerId = ?");
+                    + "SET password = ? "
+                    + "WHERE customerId = ?");
             statement.setString(1, Base64.getEncoder().encodeToString(Digest.sha256(password)));
             statement.setInt(2, id);
-            
+
             statement.executeUpdate();
+            commit();
         } catch (SQLException ex) {
+            rollback();
             System.err.println(ex.getMessage());
         }
     }
-    
+
     private Customer extractResultSet(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             Customer customer = new Customer();
@@ -120,7 +125,7 @@ public class CustomerTable extends Table {
 
             return customer;
         }
-        
+
         return null;
     }
 }

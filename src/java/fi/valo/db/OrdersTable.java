@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fi.valo.db;
 
 import fi.valo.model.Orders;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
@@ -18,21 +16,21 @@ import javax.sql.DataSource;
  * @author Jimmy
  */
 public class OrdersTable extends Table {
-    
+
     public OrdersTable(DataSource dataSource) {
         super(dataSource);
     }
-    
+
     public Orders find(int ordersId) {
         try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("SELECT * FROM orders "
-                                                    + "WHERE orderid = ?");
+                    + "WHERE orderid = ?");
             statement.setInt(1, ordersId);
-            
+
             resultSet = statement.executeQuery();
-            
+
             if (resultSet.next()) {
                 Orders order = new Orders();
                 order.setOrderId(resultSet.getInt("orderid"));
@@ -40,26 +38,27 @@ public class OrdersTable extends Table {
                 order.setOrderPrice(resultSet.getBigDecimal("orderprice"));
                 order.setOrderPoints(resultSet.getInt("orderpoints"));
                 order.setTimestamp(resultSet.getTimestamp("timestamp"));
-                
+
                 return order;
             }
+
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return null;
     }
-    
+
     public List<Orders> findByCustomerId(int customerId) {
         try {
             connection = getConnection();
-            
+
             statement = connection.prepareStatement("SELECT * FROM orders "
-                                                    + "WHERE customerid = ?");
+                    + "WHERE customerid = ?");
             statement.setInt(1, customerId);
-            
+
             resultSet = statement.executeQuery();
-            
+
             List<Orders> orders = new ArrayList<>();
             while (resultSet.next()) {
                 Orders order = new Orders();
@@ -68,42 +67,15 @@ public class OrdersTable extends Table {
                 order.setOrderPrice(resultSet.getBigDecimal("orderprice"));
                 order.setOrderPoints(resultSet.getInt("orderpoints"));
                 order.setTimestamp(resultSet.getTimestamp("timestamp"));
-                
+
                 orders.add(order);
             }
-            
+
             return orders;
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return null;
-    }
-    
-    public int add(Orders orders) {
-        try {
-            connection = getConnection();
-            
-            statement = connection.prepareStatement("INSERT INTO orders "
-                                                    + "(customerId, orderprice, orderpoints) "
-                                                    + "VALUES (?, ?, ?)",
-                                                    Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, orders.getCustomerId());
-            statement.setBigDecimal(2, orders.getOrderPrice());
-            statement.setInt(3, orders.getOrderPoints());
-            
-            statement.executeUpdate();
-            
-            resultSet = statement.getGeneratedKeys();
-            
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-            
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
-        
-        return -1;
     }
 }
