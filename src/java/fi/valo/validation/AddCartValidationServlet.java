@@ -5,15 +5,19 @@
  */
 package fi.valo.validation;
 
+import fi.valo.db.ItemTable;
+import fi.valo.model.Item;
 import fi.valo.model.QuantityItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import org.apache.commons.validator.routines.IntegerValidator;
 
 /**
@@ -22,6 +26,9 @@ import org.apache.commons.validator.routines.IntegerValidator;
  */
 @WebServlet("/addCartValidation")
 public class AddCartValidationServlet extends HttpServlet {
+
+    @Resource(name = "jdbc/velo")
+    private DataSource dataSource;
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -43,7 +50,11 @@ public class AddCartValidationServlet extends HttpServlet {
             int itemId = Integer.valueOf(request.getParameter("itemId"));
             int quantity = Integer.valueOf(paramQuantity);
             
-            if (itemId < 0) {
+            ItemTable itemTable = new ItemTable(dataSource);
+            Item item = itemTable.find(itemId);
+            itemTable.close();
+            
+            if (item == null) {
                 errors.add("Item is not found. If problem persists, contact the administrator.");
             } else if (quantity <= 0) {
                 errors.add("At least 1 quantity must be selected!");
@@ -51,10 +62,10 @@ public class AddCartValidationServlet extends HttpServlet {
                 errors.add("Only a maximum of 20 quantity is allowed!");
             } else if (sessionItems != null && sessionItems.size() > 0) {
                 QuantityItem currentItem = null;
-                
-                for (QuantityItem item : sessionItems) {
-                    if (item.getItemId() == itemId) {
-                        currentItem = item;
+
+                for (QuantityItem qi : sessionItems) {
+                    if (qi.getItemId() == itemId) {
+                        currentItem = qi;
                         break;
                     }
                 }
