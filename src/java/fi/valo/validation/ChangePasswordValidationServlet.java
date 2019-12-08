@@ -8,8 +8,10 @@ package fi.valo.validation;
 
 import fi.valo.db.CustomerTable;
 import fi.valo.model.Customer;
+import fi.valo.utility.Digest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -43,10 +45,12 @@ public class ChangePasswordValidationServlet extends HttpServlet {
             errors.add("Current Password must not be empty!");
         } else {
             int userId = (int)request.getSession().getAttribute("customerId");
+            currentPassword = Base64.getEncoder().encodeToString(Digest.sha256(currentPassword));
+            
             CustomerTable customerTable = new CustomerTable(dataSource);
             Customer customer = customerTable.find(userId);
             customerTable.close();
-            
+
             if (!customer.getPassword().equals(currentPassword)) {
                 errors.add("Current Password does not match your actual password!");
             }

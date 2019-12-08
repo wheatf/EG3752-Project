@@ -8,8 +8,10 @@ package fi.valo.validation;
 
 import fi.valo.db.CustomerTable;
 import fi.valo.model.Customer;
+import fi.valo.utility.Digest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -57,6 +59,8 @@ public class LoginValidationServlet extends HttpServlet {
             CustomerTable customerTable = new CustomerTable(dataSource);
             Customer customer = customerTable.findByEmail(email);
             customerTable.close();
+            
+            password = Base64.getEncoder().encodeToString(Digest.sha256(password));
             
             if (customer != null && password.equals(customer.getPassword())) {
                 request.getRequestDispatcher("login").forward(request, response);

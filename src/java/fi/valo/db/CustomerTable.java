@@ -7,9 +7,11 @@
 package fi.valo.db;
 
 import fi.valo.model.Customer;
+import fi.valo.utility.Digest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Base64;
 import javax.sql.DataSource;
 
 /**
@@ -72,7 +74,7 @@ public class CustomerTable extends Table {
             statement.setString(4, customer.getAddressLine2().trim().isEmpty() ? null : customer.getAddressLine2());
             statement.setString(5, customer.getPostalCode());
             statement.setString(6, customer.getMobile());
-            statement.setString(7, customer.getPassword());
+            statement.setString(7, Base64.getEncoder().encodeToString(Digest.sha256(customer.getPassword())));
             
             statement.executeUpdate();
             
@@ -95,7 +97,7 @@ public class CustomerTable extends Table {
             statement = connection.prepareStatement("UPDATE customer "
                                                     + "SET password = ? "
                                                     + "WHERE customerId = ?");
-            statement.setString(1, password);
+            statement.setString(1, Base64.getEncoder().encodeToString(Digest.sha256(password)));
             statement.setInt(2, id);
             
             statement.executeUpdate();
