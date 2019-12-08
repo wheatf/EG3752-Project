@@ -49,7 +49,6 @@ public class ChangePasswordValidationServlet extends HttpServlet {
             
             CustomerTable customerTable = new CustomerTable(dataSource);
             Customer customer = customerTable.find(userId);
-            customerTable.close();
 
             if (!customer.getPassword().equals(currentPassword)) {
                 errors.add("Current Password does not match your actual password!");

@@ -53,7 +53,7 @@ public abstract class Table {
         }
     }
 
-    public void close() {
+    protected void close() {
         if (resultSet != null) {
             try {
                 resultSet.close();

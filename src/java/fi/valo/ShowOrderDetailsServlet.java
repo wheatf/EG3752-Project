@@ -37,11 +37,9 @@ public class ShowOrderDetailsServlet extends HttpServlet {
         
         OrderDetailsTable orderDetailsTable = new OrderDetailsTable(dataSource);
         List<QuantityItem> items = orderDetailsTable.findItems(orderId);
-        orderDetailsTable.close();
         
         OrdersTable ordersTable = new OrdersTable(dataSource);
         Orders order = ordersTable.find(orderId);
-        ordersTable.close();
         
         request.setAttribute("order", order);
         request.setAttribute("items", items);

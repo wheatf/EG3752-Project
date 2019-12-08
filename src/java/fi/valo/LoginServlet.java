@@ -32,7 +32,6 @@ public class LoginServlet extends HttpServlet {
         CustomerTable customerTable = new CustomerTable(dataSource);
         
         Customer customer = customerTable.findByEmail(request.getParameter("email"));
-        customerTable.close();
         
         request.getSession().setAttribute("customerId", customer.getCustomerId());
         response.sendRedirect(request.getContextPath() + "/search");

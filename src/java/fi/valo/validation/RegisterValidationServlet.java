@@ -94,8 +94,6 @@ public class RegisterValidationServlet extends HttpServlet {
         } else {
             errors.add("Email already exists! Try login instead.");
         }
-        
-        customerTable.close();
 
         if (errors.size() > 0) {
             request.getSession().setAttribute("errors", errors);

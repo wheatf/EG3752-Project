@@ -42,6 +42,8 @@ public class ItemTable extends Table {
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return null;
@@ -72,6 +74,8 @@ public class ItemTable extends Table {
             return items;
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return null;

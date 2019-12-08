@@ -36,8 +36,6 @@ public class ProfileServlet extends HttpServlet {
         CustomerTable customerTable = new CustomerTable(dataSource);
         Customer customer = customerTable.find((int)session.getAttribute("customerId"));
         
-        customerTable.close();
-        
         request.setAttribute("customer", customer);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }

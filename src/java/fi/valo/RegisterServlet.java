@@ -42,7 +42,6 @@ public class RegisterServlet extends HttpServlet {
         customer.setPassword(request.getParameter("password"));
 
         int customerId = customerTable.add(customer);
-        customerTable.close();
         
         request.getSession().setAttribute("customerId", customerId);
 

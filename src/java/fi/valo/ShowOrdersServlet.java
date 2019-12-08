@@ -39,8 +39,6 @@ public class ShowOrdersServlet extends HttpServlet {
         
         List<Orders> orders = ordersTable.findByCustomerId(customerId);
         
-        ordersTable.close();
-        
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("orders.jsp").forward(request, response);
     }

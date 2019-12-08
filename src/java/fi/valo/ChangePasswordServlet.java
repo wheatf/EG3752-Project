@@ -39,8 +39,6 @@ public class ChangePasswordServlet extends HttpServlet {
 
         customerTable.updatePassword(customerId, newPassword);
 
-        customerTable.close();
-
         response.sendRedirect(request.getContextPath() + "/change_password_success.html");
     }
 }

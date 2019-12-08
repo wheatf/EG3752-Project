@@ -52,7 +52,6 @@ public class AddCartValidationServlet extends HttpServlet {
             
             ItemTable itemTable = new ItemTable(dataSource);
             Item item = itemTable.find(itemId);
-            itemTable.close();
             
             if (item == null) {
                 errors.add("Item is not found. If problem persists, contact the administrator.");

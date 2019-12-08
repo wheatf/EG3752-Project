@@ -63,6 +63,8 @@ public class OrderDetailsTable extends Table {
         } catch (SQLException ex) {
             rollback();
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
     }
 
@@ -94,6 +96,8 @@ public class OrderDetailsTable extends Table {
             return items;
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return null;

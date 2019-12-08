@@ -36,6 +36,8 @@ public class CustomerTable extends Table {
             return extractResultSet(resultSet);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return null;
@@ -54,6 +56,8 @@ public class CustomerTable extends Table {
             return extractResultSet(resultSet);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return null;
@@ -88,6 +92,8 @@ public class CustomerTable extends Table {
         } catch (SQLException ex) {
             rollback();
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
 
         return -1;
@@ -108,6 +114,8 @@ public class CustomerTable extends Table {
         } catch (SQLException ex) {
             rollback();
             System.err.println(ex.getMessage());
+        } finally {
+            close();
         }
     }
 

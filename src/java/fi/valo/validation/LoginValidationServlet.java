@@ -58,7 +58,6 @@ public class LoginValidationServlet extends HttpServlet {
         } else {
             CustomerTable customerTable = new CustomerTable(dataSource);
             Customer customer = customerTable.findByEmail(email);
-            customerTable.close();
             
             password = Base64.getEncoder().encodeToString(Digest.sha256(password));
             

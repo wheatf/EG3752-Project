@@ -40,8 +40,6 @@ public class AddCartServlet extends HttpServlet {
         ItemTable itemTable = new ItemTable(dataSource);
         QuantityItem item = new QuantityItem(itemTable.find(itemId));
 
-        itemTable.close();
-
         item.setQuantity(quantity);
 
         HttpSession session = request.getSession();

@@ -7,7 +7,6 @@ package fi.valo;
 
 import fi.valo.db.CustomerTable;
 import fi.valo.db.OrderDetailsTable;
-import fi.valo.db.OrdersTable;
 import fi.valo.model.OrderDetails;
 import fi.valo.model.Orders;
 import fi.valo.model.QuantityItem;
@@ -60,11 +59,8 @@ public class CheckoutServlet extends HttpServlet {
         
         orderDetailsTable.add(orders, orderDetailsList);
         
-        orderDetailsTable.close();
-        
         CustomerTable customerTable = new CustomerTable(dataSource);
         String customerName = customerTable.find((int) session.getAttribute("customerId")).getFullName();
-        customerTable.close();
 
         session.setAttribute("customerName", customerName);
         session.removeAttribute("sessionItems");
