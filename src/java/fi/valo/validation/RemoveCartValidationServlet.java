@@ -48,7 +48,7 @@ public class RemoveCartValidationServlet extends HttpServlet {
             } else if (quantity > 20) {
                 errors.add("Quantity cannot exceed the maximum of 20!");
             } else {
-                if (sessionItems != null && sessionItems.size() > 0) {
+                if (sessionItems != null && sessionItems.size() > 0 ) {
                     QuantityItem currentItem = null;
 
                     for (QuantityItem item : sessionItems) {
@@ -61,6 +61,8 @@ public class RemoveCartValidationServlet extends HttpServlet {
                     if (currentItem != null && currentItem.getQuantity() - quantity < 0) {
                         errors.add("Quantity will be less than 0!\nCurrently there are "
                                 + currentItem.getQuantity() + " in the cart.");
+                    } else if (currentItem == null) {
+                        errors.add("Item does not exists in cart! If problem persists, contact the administrator.");
                     }
                 } else {
                     errors.add("Item does not exists in cart! If problem persists, contact the administrator.");
