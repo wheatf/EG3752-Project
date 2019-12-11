@@ -30,7 +30,7 @@
             </div>
             
             <div>
-                Total Price: ${totalPrice}
+                Total Price: $${totalPrice}
                 <c:remove var="totalPrice" />
             </div>
             
