@@ -34,6 +34,8 @@
                     <th>Price</th>
                     <th>Points Redeemable</th>
                     <th style="color: red">Items In Cart</th>
+                    <th style="color: green">Total Price</th>
+                    <th style="color: green">Total Points Redeemable</th>
                 </tr>
                 
                 <c:forEach items="${sessionItems}" var="item">
@@ -43,6 +45,8 @@
                         <td>$${item.getPrice()}</td>
                         <td>${item.getPoints()}</td>
                         <td style="color: red">${item.getQuantity()}</td>
+                        <td style="color: green">$${item.getTotalPrice()}</td>
+                        <td style="color: green">${item.getTotalPoints()}</td>
                     </tr>
                 </c:forEach>
             </table>

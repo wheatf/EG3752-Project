@@ -7,6 +7,7 @@
 package fi.valo.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -34,6 +35,14 @@ public class QuantityItem extends Item implements Serializable{
     
     public int getQuantity(){
         return quantity;
+    }
+    
+    public BigDecimal getTotalPrice() {
+        return getPrice().multiply(new BigDecimal(quantity));
+    }
+    
+    public int getTotalPoints() {
+        return getPoints() * quantity;
     }
 
     @Override

@@ -58,6 +58,8 @@
                             <th>Price</th>
                             <th>Points Redeemable</th>
                             <th style="color: red">Items In Cart</th>
+                            <th style="color: green">Total Price</th>
+                            <th style="color: green">Total Points Redeemable</th>
                         </tr>
                         <c:forEach items="${sessionItems}" var="item">
                             <tr>
@@ -66,6 +68,8 @@
                                 <td>$${item.getPrice()}</td>
                                 <td>${item.getPoints()}</td>
                                 <td style="color: red">${item.getQuantity()}</td>
+                                <td style="color: green">$${item.getTotalPrice()}</td>
+                                <td style="color: green">${item.getTotalPoints()}</td>
                                 <td>
                                     <form action="removeCartValidation" method="post">
                                         <input type="hidden" name="itemId" value="${item.getItemId()}"/>
@@ -79,8 +83,8 @@
                 </section>
 
                 <section>
-                    <div>Total Price: $${totalPrice}</div>
-                    <div>Total Points Redeemable: ${totalPoints}</div>
+                    <div>Total Price in cart: $${totalPrice}</div>
+                    <div>Total Points Redeemable in cart: ${totalPoints}</div>
 
                     <div>
                         <a href="checkout.jsp">Proceed to checkout</a>
