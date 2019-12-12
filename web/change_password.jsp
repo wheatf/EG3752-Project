@@ -16,6 +16,12 @@
             <h1>Change Password</h1>
         </header>
         
+        <nav>
+            <ul>
+                <li><a href="profile">Go back to profile</a></li>
+            </ul>
+        </nav>
+        
         <c:if test="${errors != null && errors.size() > 0}">
             <section style="color: red">
                 <ul>
