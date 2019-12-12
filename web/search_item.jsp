@@ -44,53 +44,62 @@
         </section>
         
         <c:choose>
-            <c:when test="${errors != null && errors.size() > 0}">
-                <section style="color: red">
-                    <ul>
-                        <c:forEach items="${errors}" var="error">
-                            <li>${error}</li>
+            <c:when test="${items != null && items.size() > 0}">
+                <c:choose>
+                    <c:when test="${errors != null && errors.size() > 0}">
+                        <section style="color: red">
+                            <ul>
+                                <c:forEach items="${errors}" var="error">
+                                    <li>${error}</li>
+                                </c:forEach>
+                            </ul>
+                        </section>
+
+                        <c:remove var="errors" />
+                    </c:when>
+
+                    <c:when test="${success != null}">
+                        <section style="color: blue">
+                            <ul>
+                                <li>${success}</li>
+                            </ul>
+                        </section>
+
+                        <c:remove var="success" />
+                    </c:when>
+                </c:choose>
+
+                <section>
+                    <table>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Brand</th>
+                            <th>Price</th>
+                            <th>Points Redeemable</th>
+                        </tr>
+                        <c:forEach items="${items}" var="item">
+                            <tr>
+                                <td>${item.getItemDescription()}</td>
+                                <td>${item.getBrand()}</td>
+                                <td>$${item.getPrice()}</td>
+                                <td>${item.getPoints()}</td>
+                                <td>
+                                    <form action="addCartValidation" method="post">
+                                        <input type="hidden" name="itemId" value="${item.getItemId()}"/>
+                                        <input type="text" id="quantity" name="quantity"/>
+                                        <button type="submit">Add to cart</button>
+                                    </form>
+                                </td>
+                            </tr>
                         </c:forEach>
-                    </ul>
+                    </table>
                 </section>
-                
-                <c:remove var="errors" />
             </c:when>
-            
-            <c:when test="${success != null}">
-                <section style="color: blue">
-                    <ul>
-                        <li>${success}</li>
-                    </ul>
+            <c:otherwise>
+                <section>
+                    No items are found. Try searching again.
                 </section>
-                    
-                <c:remove var="success" />
-            </c:when>
+            </c:otherwise>
         </c:choose>
-        
-        <section>
-            <table>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Points Redeemable</th>
-                </tr>
-                <c:forEach items="${items}" var="item">
-                    <tr>
-                        <td>${item.getItemDescription()}</td>
-                        <td>${item.getBrand()}</td>
-                        <td>$${item.getPrice()}</td>
-                        <td>${item.getPoints()}</td>
-                        <td>
-                            <form action="addCartValidation" method="post">
-                                <input type="hidden" name="itemId" value="${item.getItemId()}"/>
-                                <input type="text" id="quantity" name="quantity"/>
-                                <button type="submit">Add to cart</button>
-                            </form>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </section>
     </body>
 </html>
