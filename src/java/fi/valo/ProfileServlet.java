@@ -7,8 +7,11 @@
 package fi.valo;
 
 import fi.valo.db.CustomerTable;
+import fi.valo.db.OrdersTable;
 import fi.valo.model.Customer;
+import fi.valo.model.Orders;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,10 +35,20 @@ public class ProfileServlet extends HttpServlet {
                             HttpServletResponse response) 
                         throws ServletException, IOException {
         HttpSession session = request.getSession();
+        int customerId = (int)session.getAttribute("customerId");
         
         CustomerTable customerTable = new CustomerTable(dataSource);
-        Customer customer = customerTable.find((int)session.getAttribute("customerId"));
+        Customer customer = customerTable.find(customerId);
         
+        OrdersTable orderTable = new OrdersTable(dataSource);
+        List<Orders> orders = orderTable.findByCustomerId(customerId);
+        
+        int totalPoints = 0;
+        for (Orders o : orders) {
+            totalPoints += o.getOrderPoints();
+        }
+        
+        request.setAttribute("totalPoints", totalPoints);
         request.setAttribute("customer", customer);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }

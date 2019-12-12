@@ -54,6 +54,11 @@
                 <span>Mobile: </span>
                 <span>${customer.getMobile()}</span>
             </div>
+            
+            <div style="color: red">
+                <span>Total points received so far: </span>
+                <span>${totalPoints}</span>
+            </div>
         </section>
             
         <section>
