@@ -30,6 +30,8 @@
                     </c:forEach>
                 </ul>
             </section>
+            
+            <c:remove var="errors" />
         </c:if>
         
         <section>
