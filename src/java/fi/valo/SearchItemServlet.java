@@ -34,9 +34,14 @@ public class SearchItemServlet extends HttpServlet {
                         throws ServletException, IOException {
         ItemTable itemTable = new ItemTable(dataSource);
         
-        List<Item> items = itemTable.findByItemDescription(Optional.ofNullable(request.
-                                                            getParameter("searchItemName")).
-                                                            orElse(""));
+        String searchItemName = request.getParameter("searchItemName");
+        if (searchItemName != null) {
+            searchItemName = searchItemName.trim();
+        } else {
+            searchItemName = "";
+        }
+        
+        List<Item> items = itemTable.findByItemDescription(searchItemName);
         
         request.setAttribute("items", items);
         request.getRequestDispatcher("/search_item.jsp")
