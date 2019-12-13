@@ -43,6 +43,7 @@ public class SearchItemServlet extends HttpServlet {
         
         List<Item> items = itemTable.findByItemDescription(searchItemName);
         
+        request.setAttribute("searchItemName", searchItemName);
         request.setAttribute("items", items);
         request.getRequestDispatcher("/search_item.jsp")
                 .forward(request, response);

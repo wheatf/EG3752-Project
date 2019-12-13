@@ -43,6 +43,12 @@
             </form>
         </section>
         
+        <c:if test="${searchItemName != null && !searchItemName.isEmpty()}">
+            <section>
+                <h3>Displaying "${searchItemName}"</h3>
+            </section>
+        </c:if>
+        
         <c:choose>
             <c:when test="${items != null && items.size() > 0}">
                 <c:choose>
@@ -97,7 +103,7 @@
             </c:when>
             <c:otherwise>
                 <section>
-                    No items are found. Try searching again.
+                    <p>No items are found. Try searching again.</p>
                 </section>
             </c:otherwise>
         </c:choose>
