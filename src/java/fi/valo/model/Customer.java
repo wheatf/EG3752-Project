@@ -7,13 +7,14 @@
 package fi.valo.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
  * @author Jimmy
  */
 public class Customer implements Serializable {
+    private final long serialVersionUID = -1L;
+    
     private int customerId;
     private String fullName;
     private String email;

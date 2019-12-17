@@ -15,6 +15,8 @@ import java.sql.Timestamp;
  * @author Jimmy
  */
 public class Orders implements Serializable {
+    private final long serialVersionUID = -1L;
+    
     private int orderId;
     private int customerId;
     private BigDecimal orderPrice;

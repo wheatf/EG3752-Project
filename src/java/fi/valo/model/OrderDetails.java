@@ -13,13 +13,15 @@ import java.io.Serializable;
  * @author Jimmy
  */
 public class OrderDetails implements Serializable {
+    private final long serialVersionUID = -1L;
+    
     private int orderId;
     private int itemId;
     private int quantity;
 
     public OrderDetails() {
     }
-
+    
     public int getOrderId() {
         return orderId;
     }

@@ -14,6 +14,8 @@ import java.math.BigDecimal;
  * @author Jimmy
  */
 public class Item implements Serializable {
+    private final long serialVersionUID = -1L;
+    
     private int itemId;
     private String itemDescription;
     private String brand;
