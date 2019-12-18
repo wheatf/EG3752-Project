@@ -73,7 +73,7 @@
                                 <td>
                                     <form action="removeCartValidation" method="post">
                                         <input type="hidden" name="itemId" value="${item.getItemId()}"/>
-                                        <input type="number" id="quantity" name="quantity"/>
+                                        <input type="number" id="quantity" name="quantity" onpaste="return false;" ondrop="return false;"/>
                                         <button type="submit">Remove</button>
                                     </form>
                                 </td>

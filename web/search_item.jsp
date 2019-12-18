@@ -92,7 +92,7 @@
                                 <td>
                                     <form action="addCartValidation" method="post">
                                         <input type="hidden" name="itemId" value="${item.getItemId()}"/>
-                                        <input type="text" id="quantity" name="quantity"/>
+                                        <input type="text" id="quantity" name="quantity" onpaste="return false;" ondrop="return false;"/>
                                         <button type="submit">Add to cart</button>
                                     </form>
                                 </td>
